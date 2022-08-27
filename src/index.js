@@ -1,14 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import './index.css'
-import App from './App'
+import './styles/css/index.css'
+import MCGame from './pages/mcgame'
+import Settings from './pages/settings'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path="/" element={<MCGame />} />
+      <Route path="settings" element={<Settings />} />
     </Routes>
   </BrowserRouter>
 )
