@@ -1,18 +1,22 @@
 import React from 'react'
 
 import TitleBar from '../components/titlebar'
-import { HeaderDiv, ComponentsDiv } from '../styles/pages/base'
-import { ImageDiv, AnswersDiv } from '../styles/pages/mcgame'
+import GamePane from '../components/gamepane'
 
-function MCGame(props) {
+import { HeaderDiv, ComponentsDiv } from '../styles/pages/base'
+
+function MCGame() {
+  var gameData = {
+    img_path: 'shauryas.jpg',
+    question: 'Who is this?',
+  }
   return (
     <>
       <HeaderDiv>
         <TitleBar page="Memory Recall" />
       </HeaderDiv>
       <ComponentsDiv>
-        <ImageDiv></ImageDiv>
-        <AnswersDiv></AnswersDiv>
+        <GamePane gameData={gameData} />
       </ComponentsDiv>
     </>
   )
