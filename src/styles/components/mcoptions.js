@@ -3,7 +3,7 @@ import * as basestyles from './base'
 
 export const MCOptionsContentsDiv = styled(basestyles.Div)`
   margin: 0 auto;
-  width: 70%;
+  width: 75%;
   aspect-ratio: 1 / 1;
   border-radius: 0.8rem;
   overflow: hidden;

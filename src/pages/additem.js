@@ -1,21 +1,21 @@
 import React from 'react'
 
 import TitleBar from '../components/titlebar'
-import SettingsPane from '../components/settingspane'
+import AddItemsPane from '../components/additemspane'
 
 import { HeaderDiv, ComponentsDiv } from '../styles/pages/base'
 
-function Settings(props) {
+function AddItem(props) {
   return (
     <>
       <HeaderDiv>
-        <TitleBar page="Settings" />
+        <TitleBar page="Add New Item" />
       </HeaderDiv>
       <ComponentsDiv>
-        <SettingsPane />
+        <AddItemsPane />
       </ComponentsDiv>
     </>
   )
 }
 
-export default Settings
+export default AddItem

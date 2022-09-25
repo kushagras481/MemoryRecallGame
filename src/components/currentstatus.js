@@ -40,6 +40,8 @@ function CurrentStatus(props) {
     if (!revealAnswer && selectedAnswer !== correctAnswerId) {
       setRevealAnswer(true)
     } else {
+      var qPos = parseInt(localStorage.getItem('qPos'))
+      localStorage.setItem('qPos', qPos + 1)
       setLoaded(false)
     }
   }

@@ -3,7 +3,6 @@ import * as basestyles from './base'
 
 export const GameDiv = styled(basestyles.Div)`
   width: 100%;
-  height: 100%;
   padding: 1rem;
 `
 
@@ -14,6 +13,7 @@ export const LeftPane = styled(basestyles.Div)`
   padding: 0.5rem;
   border-right: 0.01rem solid gray;
   overflow-y: auto;
+  position: relative;
 `
 
 export const RightPane = styled(basestyles.Div)`
@@ -21,5 +21,6 @@ export const RightPane = styled(basestyles.Div)`
   height: 100%;
   float: right;
   padding: 0.5rem;
+  overflow-y: auto;
+  position: relative;
 `
-

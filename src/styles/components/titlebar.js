@@ -48,19 +48,51 @@ export const TitleBarButton = styled.button`
 
 export const TitleButton = styled(TitleBarButton)`
   font-size: 2.5rem;
-  line-height: 2.5rem;
   border: none;
   font-weight: bold;
   font-family: 'Helvetica Neue';
   padding: 0rem;
   margin: 0rem;
-  height: 2.5rem;
   align-items: center;
   color: inherit;
 `
 
 export const HoverTitleButton = styled(TitleButton)`
   &:hover {
-    color: #546e7a;
+    color: #66ffcc;
   }
+`
+
+export const BackIconButtonDiv = styled(basestyles.Div)`
+  padding: 1.35rem 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.6rem;
+  &:hover {
+    transform: translateY(-0.25em);
+  }
+`
+
+export const BackIconButton = styled(basestyles.IconButton)`
+  width: 2.2rem;
+  height: 2.2rem;
+  background-image: url('/icons/back-icon.png');
+  cursor: pointer;
+`
+
+export const SettingsIconButtonDiv = styled(basestyles.Div)`
+  padding: 1.35rem 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.6rem;
+  &:hover {
+    transform: translateY(-0.25em);
+  }
+`
+
+export const SettingsIconButton = styled(basestyles.IconButton)`
+  width: 2.2rem;
+  height: 2.2rem;
+  background-image: url('/icons/settings-icon.png');
+  cursor: pointer;
 `

@@ -3,11 +3,11 @@ import * as basestyles from './base'
 
 export const ImageContentsDiv = styled(basestyles.Div)`
   margin: 0 auto;
-  width: 70%;
+  width: 75%;
   aspect-ratio: 1 / 1;
-  background-color: green;
   border-radius: 0.8rem;
   overflow: hidden;
+  border: 0.2rem solid transparent;
 `
 
 export const ImageContent = styled.img`
