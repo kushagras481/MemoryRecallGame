@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import TitleBar from '../components/titlebar'
 import GamePane from '../components/gamepane'
 import NotEnoughDataPane from '../components/notenoughdatapane'
+import LoadDataButton from '../components/loaddatabutton'
 
 import { HeaderDiv, ComponentsDiv } from '../styles/pages/base'
 
@@ -16,8 +17,39 @@ function MCGame() {
   const [gameData, setGameData] = useState({})
   const [hasData, setHasData] = useState(false)
   const [itemsNeeded, setItemsNeeded] = useState(0)
+  const [showLoadDataInfo, setShowLoadDataInfo] = useState(false)
+  const [loadingDemoData, setLoadingDemoData] = useState(false)
 
+  var localUser = localStorage.getItem('user')
+  var localUserId = localStorage.getItem('user_id')
+
+  const [user, setUser] = useState(localUser === null ? '' : localUser)
+  const [userId, setUserId] = useState(
+    localUserId === null ? -1 : parseInt(localUserId)
+  )
+
+  if (localUser === null) {
+    localStorage.setItem('user', '')
+  }
+
+  if (localUserId === null) {
+    localStorage.setItem('user_id', '-1')
+  }
+
+  let saveStats = user !== null && user !== ''
   var savedData = useLiveQuery(() => db.game_data.toArray())
+
+  useEffect(() => {
+    async function checkDataCount() {
+      let userCount = await db.users.count()
+      let questionCount = await db.game_data.count()
+      if (userCount === 0 && questionCount === 0) {
+        setShowLoadDataInfo(true)
+      }
+    }
+
+    checkDataCount()
+  }, [])
 
   useEffect(() => {
     setLoaded(false)
@@ -28,6 +60,13 @@ function MCGame() {
       setup()
     }
   }, [loaded])
+
+  let noDataPhrase =
+    'Not enough data to run game. Please add ' +
+    itemsNeeded +
+    ' more ' +
+    (itemsNeeded > 1 ? 'items' : 'item') +
+    ' through settings.'
 
   function setup() {
     if (!savedData || typeof savedData === 'undefined') {
@@ -84,6 +123,7 @@ function MCGame() {
         question: questionsData[item.type],
         options: shuffle(optionsData),
         correct_answer_id: item.id,
+        question_id: item.id,
       })
       setHasData(true)
     }
@@ -115,11 +155,58 @@ function MCGame() {
     loaded && (
       <>
         <HeaderDiv>
-          <TitleBar page="Memory Recall" />
+          <TitleBar
+            page="Memory Recall"
+            user={user}
+            setUser={setUser}
+            setUserId={setUserId}
+          />
         </HeaderDiv>
         <ComponentsDiv>
-          {hasData && <GamePane gameData={gameData} setLoaded={setLoaded} />}
-          {!hasData && <NotEnoughDataPane itemsNeeded={itemsNeeded} />}
+          {hasData && (
+            <GamePane
+              gameData={gameData}
+              setLoaded={setLoaded}
+              saveStats={saveStats}
+              userId={userId}
+            />
+          )}
+          {!hasData && (
+            <>
+              {!loadingDemoData && (
+                <>
+                  <NotEnoughDataPane>
+                    <span>
+                      {noDataPhrase}
+                      {showLoadDataInfo && (
+                        <>
+                          <br />
+                          <br />
+                          Click the button below to load demo data including
+                          questions, users, and user statistics.
+                        </>
+                      )}
+                    </span>
+                  </NotEnoughDataPane>
+                  {setShowLoadDataInfo && (
+                    <LoadDataButton
+                      loadingData={loadingDemoData}
+                      setLoadingData={setLoadingDemoData}
+                    />
+                  )}
+                </>
+              )}
+              {loadingDemoData && (
+                <>
+                  <NotEnoughDataPane>
+                    <span>
+                      Loading example data... (Can take up to a few minutes)
+                    </span>
+                  </NotEnoughDataPane>
+                </>
+              )}
+            </>
+          )}
         </ComponentsDiv>
       </>
     )

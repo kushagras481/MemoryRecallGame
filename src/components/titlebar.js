@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -9,44 +9,147 @@ import {
   Mid,
   Right,
   TitleButton,
-  BackIconButtonDiv,
+  UserInputDiv,
+  UserInputField,
+  TitleBarIconButtonDiv,
   BackIconButton,
-  SettingsIconButtonDiv,
   SettingsIconButton,
+  SwitchIconButton,
+  CheckIconButton,
+  XIconButton,
 } from '../styles/components/titlebar'
+
+import { db } from '../data/db'
 
 function TitleBar(props) {
   const page = props.page
+  const user = props.user
+  const setUser = props.setUser
+  const setUserId = props.setUserId
+
   const navigate = useNavigate()
 
+  const [userViewMode, setUserViewMode] = useState(0) // 0 = viewing, 1 = editing
+  const [changingUser, setChangingUser] = useState('')
+
+  const changeUserRef = useRef(null)
+
+  useEffect(() => {
+    if (page === 'Memory Recall') {
+      setChangingUser(user === '' ? 'Anonymous' : user.toLowerCase())
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (userViewMode === 1) {
+      changeUserRef.current.focus()
+    }
+  }, [userViewMode])
+
   var left = <></>
-  var mid = <></>
+  var mid = <TitleButton>{page}</TitleButton>
   var right = <></>
+
+  function onChangingUser(e) {
+    setChangingUser(e.target.value)
+  }
+
+  function onSwitchUser() {
+    if (user === '') {
+      setChangingUser('')
+    }
+    setUserViewMode(1)
+  }
+
+  function onCancelUser() {
+    setChangingUser(user === '' ? 'Anonymous' : user.toLowerCase())
+    setUserViewMode(0)
+  }
+
+  async function onSaveUser() {
+    let switchedUser = changingUser.toLowerCase()
+    localStorage.setItem('user', switchedUser)
+
+    let savedUser = await db.users.get({
+      username: switchedUser,
+    })
+
+    if (savedUser !== undefined) {
+      localStorage.setItem('user_id', savedUser.id)
+      setUserId(savedUser.id)
+    } else {
+      if (switchedUser === '') {
+        localStorage.setItem('user_id', -1)
+        setUserId(-1)
+      } else {
+        const data = {
+          username: switchedUser,
+        }
+        let newUserId = await db.users.add(data)
+        localStorage.setItem('user_id', newUserId)
+        setUserId(newUserId)
+      }
+    }
+    setUser(switchedUser)
+    setUserViewMode(0)
+  }
 
   switch (page) {
     case 'Memory Recall':
-      mid = <TitleButton>{page}</TitleButton>
+      left = (
+        <>
+          <UserInputDiv>
+            <UserInputField
+              ref={changeUserRef}
+              value={changingUser}
+              disabled={userViewMode === 0}
+              onChange={onChangingUser}
+              placeholder="username"
+            />
+          </UserInputDiv>
+          {userViewMode === 0 && (
+            <TitleBarIconButtonDiv>
+              <SwitchIconButton onClick={onSwitchUser} />
+            </TitleBarIconButtonDiv>
+          )}
+          {userViewMode === 1 && (
+            <>
+              <TitleBarIconButtonDiv>
+                <CheckIconButton onClick={onSaveUser} />
+              </TitleBarIconButtonDiv>
+              <TitleBarIconButtonDiv>
+                <XIconButton onClick={onCancelUser} />
+              </TitleBarIconButtonDiv>
+            </>
+          )}
+        </>
+      )
       right = (
-        <SettingsIconButtonDiv onClick={goToSettings}>
+        <TitleBarIconButtonDiv onClick={goToSettings}>
           <SettingsIconButton />
-        </SettingsIconButtonDiv>
+        </TitleBarIconButtonDiv>
       )
       break
     case 'Settings':
       left = (
-        <BackIconButtonDiv onClick={goToMCGame}>
+        <TitleBarIconButtonDiv onClick={goToMCGame}>
           <BackIconButton />
-        </BackIconButtonDiv>
+        </TitleBarIconButtonDiv>
       )
-      mid = <TitleButton>{page}</TitleButton>
       break
     case 'Add New Item':
       left = (
-        <BackIconButtonDiv onClick={goToSettings}>
+        <TitleBarIconButtonDiv onClick={goToSettings}>
           <BackIconButton />
-        </BackIconButtonDiv>
+        </TitleBarIconButtonDiv>
       )
-      mid = <TitleButton>{page}</TitleButton>
+      break
+    case 'User Stats':
+      left = (
+        <TitleBarIconButtonDiv onClick={goToSettings}>
+          <BackIconButton />
+        </TitleBarIconButtonDiv>
+      )
       break
     default:
       break

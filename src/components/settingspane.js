@@ -16,12 +16,20 @@ function SettingsPane(props) {
       text: 'Add Item',
       click: goToAddItem,
     },
+    {
+      text: 'User Stats',
+      click: goToUserStats,
+    },
   ]
 
   const navigate = useNavigate()
 
   function goToAddItem() {
     navigate('/additem')
+  }
+
+  function goToUserStats() {
+    navigate('/userstats')
   }
 
   return (

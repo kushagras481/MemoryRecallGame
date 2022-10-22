@@ -10,6 +10,8 @@ import { GameDiv, LeftPane, RightPane } from '../styles/components/gamepane'
 function GamePane(props) {
   const gameData = props.gameData
   const setLoaded = props.setLoaded
+  const saveStats = props.saveStats
+  const userId = props.userId
 
   const [selectedAnswer, setSelectedAnswer] = useState(0)
   const [revealAnswer, setRevealAnswer] = useState(false)
@@ -35,6 +37,9 @@ function GamePane(props) {
             setLoaded={setLoaded}
             revealAnswer={revealAnswer}
             setRevealAnswer={setRevealAnswer}
+            userId={userId}
+            questionId={gameData.question_id}
+            saveStats={saveStats}
           />
         </RightPane>
       </GameDiv>

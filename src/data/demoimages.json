@@ -1,0 +1,34 @@
+{
+  "data": [
+    {
+      "path": "/images/demo/percy.jpeg",
+      "name": "Percy",
+      "type": "person"
+    },
+    {
+      "path": "/images/demo/annabeth.jpeg",
+      "name": "Annabeth",
+      "type": "person"
+    },
+    {
+      "path": "/images/demo/grover.jpeg",
+      "name": "Grover",
+      "type": "person"
+    },
+    {
+      "path": "/images/demo/rachel.jpeg",
+      "name": "Rachel",
+      "type": "person"
+    },
+    {
+      "path": "/images/demo/luke.jpeg",
+      "name": "Luke",
+      "type": "person"
+    },
+    {
+      "path": "/images/demo/thalia.jpeg",
+      "name": "Thalia",
+      "type": "person"
+    }
+  ]
+}

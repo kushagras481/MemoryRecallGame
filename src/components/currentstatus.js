@@ -6,12 +6,17 @@ import {
   LinkText,
 } from '../styles/components/currentstatus'
 
+import { db } from '../data/db'
+
 function CurrentStatus(props) {
   const selectedAnswer = props.selectedAnswer
   const correctAnswerId = props.correctAnswerId
   const setLoaded = props.setLoaded
   const revealAnswer = props.revealAnswer
   const setRevealAnswer = props.setRevealAnswer
+  const userId = props.userId
+  const questionId = props.questionId
+  const saveStats = props.saveStats
 
   const defaultStatus = 'Select an answer.'
   const correctStatus = 'Correct answer!'
@@ -40,6 +45,16 @@ function CurrentStatus(props) {
     if (!revealAnswer && selectedAnswer !== correctAnswerId) {
       setRevealAnswer(true)
     } else {
+      if (saveStats) {
+        const datetime = new Date()
+        const data = {
+          username_id: userId,
+          question_id: questionId,
+          result: selectedAnswer === correctAnswerId ? 1 : 0, //incorrect = 0, correct = 1
+          datetime: datetime.toISOString(),
+        }
+        db.user_stats.add(data)
+      }
       var qPos = parseInt(localStorage.getItem('qPos'))
       localStorage.setItem('qPos', qPos + 1)
       setLoaded(false)

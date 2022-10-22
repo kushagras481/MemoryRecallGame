@@ -3,7 +3,6 @@ import * as basestyles from './base'
 
 export const NotEnoughDataPaneDiv = styled(basestyles.Div)`
   width: 100%;
-  height: 100%;
 `
 
 export const NotEnoughDataText = styled.h1`
